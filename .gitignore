@@ -33,3 +33,7 @@
 
 /.idea/
 /cmake-build-debug/
+/scripts/check
+/scripts/test/
+/scripts/log_stderr
+/scripts/executable

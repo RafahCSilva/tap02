@@ -1,0 +1,22 @@
+Instruções para obter a nota do seu projeto
+===========================================
+
+Coloque o seu programa no mesmo diretório em que extrair o conteúdo
+deste arquivo .zip
+
+Num terminal, supondo que seu programa se chame  prog  digite:
+
+```bash
+./grade.bash ./prog
+```
+
+Sua nota sairá em seguida. Olhe o arquivo log_stderr para informações
+sobre linhas que o seu programa gerou que não são válidas. Se o seu
+programa não gerou linhas que devia ter gerado, não haverá nada no
+arquivo de log.
+
+O tempo limite para a execução de cada instância é 25 segundos e para
+a execução de todas as instâncias juntas é 5 minutos. Quando o professor
+for rodar os testes ele usará uma máquina com 8Gb de RAM e processador
+Intel Core 2 Duo 2.8GHz. 
+
