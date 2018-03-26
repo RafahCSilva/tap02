@@ -71,7 +71,7 @@ int main() {
     std::cout << "eae Rafao" << std::endl;
 
     fscanf(stdin, "%d %d", &N, &K );
-    fprintf(stderr, "N: %d  K: %d\n", N, K );
+    // fprintf(stderr, "N: %d  K: %d\n", N, K );
 
     peca_t s[K];
     S = s;
