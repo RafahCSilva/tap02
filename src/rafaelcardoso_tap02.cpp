@@ -5,6 +5,17 @@
  *
  * Compile com C++ 11:
  *   g++ rafaelcardoso_tap02.cpp -o rafaelcardoso_tap02.exe -std=c++11
+ *
+ *
+ * Rodando no MacBook Pro:
+ * ....................................................................................................
+ * Tempo decorrido: 03:46
+ *
+ * Nota do item (a): 8.00 de 8
+ * Nota do item (b): 4.00 de 4
+ * Nota do item (c): 0.00 de 4
+ *
+ * Nota do projeto: 12.00 de 10
  */
 
 #include <iostream>

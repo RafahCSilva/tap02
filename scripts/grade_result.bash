@@ -28,12 +28,18 @@ for i in {00..99}; do
     if (( L > 0 || N == 0 )); then
         A=$((A+1))
         M=$(cat ./test/file$i | sort -u | wc -l)
+        echo -n $i ": gab[ " $N " ]  meu " $M
         if (( M == N )); then
             B=$((B+1))
             if (( L == N )); then
                 C=$((C+1))
             fi
+            echo "  OK"
+        else
+            echo "  Fail <-----"
         fi
+    else
+        echo $i ": gab[ " $N " ]  meu " $L" Fail? <-----"
     fi
 done
 
