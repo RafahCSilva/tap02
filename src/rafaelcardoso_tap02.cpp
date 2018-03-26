@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #define V false     // VERBOSE
 
@@ -36,7 +37,10 @@ peca_t *PECAS;
 peca_t *FITA;
 
 // Armazenara os resultados obtidos
-std::vector<std::vector<peca_t> > RESULTADOS;
+std::vector<std::vector<peca_t> *> RESULTADOS;
+
+// Dicionario para armazenar as configuracoes encontradas
+std::map<std::string, bool> *ENCONTRADOS;
 
 /**
  * Funcao que faz backtrack para tentar todas as possibilidades de combinacao.
@@ -47,16 +51,35 @@ std::vector<std::vector<peca_t> > RESULTADOS;
 void DOMINO( const int posicao, const int last_peca ) {
     // Se completou a FITA, entao é uma possibilidade!
     if ( posicao <= 0 ) {
-        std::vector<peca_t> resp;
-        for ( int i = 0; i < K; i++ )
-            resp.push_back(( peca_t ) { FITA[ i ].a, FITA[ i ].b, PECA_USADA } );
-        RESULTADOS.push_back( resp );
+        auto *resp = new std::vector<peca_t>;
+        std::string chave;
+        for ( int i = 0; i < K; i++ ) {
+            resp->push_back(( peca_t ) { FITA[ i ].a, FITA[ i ].b, PECA_USADA } );
+            sprintf(( char * ) chave.c_str(), "%s-%d.%d", chave.c_str(), FITA[ i ].a, FITA[ i ].b );
+        }
+
+        // Procura se já existe esta config para add ou nao aos RESULTADOS
+//        if ( V )fprintf(stderr, "   = %s", chave.c_str());
+        bool encontrado =
+                ( !ENCONTRADOS->empty()) &&
+                ( ENCONTRADOS->find( chave ) == ENCONTRADOS->end());
+//        if ( V ) fprintf(stderr, " (%d)\n", encontrado );
+        if ( !encontrado ) {
+//            fprintf(stderr, " OLA\n" );
+//            fprintf(stderr, " %lli\n", resp->size());
+            RESULTADOS.push_back( resp );
+//            fprintf(stderr, " OII\n" );
+//            ENCONTRADOS->insert( std::make_pair( chave, true ));
+            ENCONTRADOS->insert( ENCONTRADOS->begin(), std::pair<std::string, bool>( chave, true ));
+//            ENCONTRADOS->insert( std::pair<std::string, bool>( chave, true ));
+//            ENCONTRADOS->emplace( chave, true );
+        }
 
         if ( V ) {
             fprintf(stderr, "      " );
-            for ( int k = 0; k < K; ++k )
-                fprintf(stderr, "%d.%d  ", resp[ k ].a, resp[ k ].b );
-            fprintf(stderr, "\n" );
+            for ( unsigned long long int k = 0; k < K; ++k )
+                fprintf(stderr, "%d.%d  ", resp->at( k ).a, resp->at( k ).b );
+            fprintf(stderr, "   = %s (%d)\n", chave.c_str(), encontrado );
         }
         return;
     }
@@ -102,9 +125,9 @@ void DOMINO( const int posicao, const int last_peca ) {
 void print_resultado() {
     if ( V ) fprintf(stderr, "|RESULTADOS|: %d\n", ( int ) RESULTADOS.size());
 //    for ( int resp = 0; resp < RESULTADOS.size(); ++resp ) {
-    for ( std::vector<peca_t> resultado: RESULTADOS ) {
+    for ( std::vector<peca_t> *resultado: RESULTADOS ) {
         for ( int k = 0; k < K; ++k )
-            fprintf(stdout, "%d %d ", resultado[ k ].a, resultado[ k ].b );
+            fprintf(stdout, "%d %d ", resultado->at( k ).a, resultado->at( k ).b );
         fprintf(stdout, "\n" );
     }
 }
@@ -121,6 +144,9 @@ int main() {
     // Aloca a Fita/Tabuleiro1D de tamanho K
     peca_t fita[K];
     FITA = fita;
+
+    // Inicializa o Encontrados
+    ENCONTRADOS = new std::map<std::string, bool>;
 
     // Ler todas as PECAS de Domino e
     for ( int i = 0; i < N; ++i ) {
