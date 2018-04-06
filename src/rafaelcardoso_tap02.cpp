@@ -20,8 +20,9 @@
 
 #include <iostream>
 #include <vector>
+#include <cstdio>
 
-#define V false     // VERBOSE
+//#define V false     // VERBOSE
 
 // FLAG para se a peca de Domino já estiver sendo usada ou nao
 #define PECA_NAO_USADA  0
@@ -63,12 +64,6 @@ void DOMINO( const int posicao, const int last_peca ) {
             resp.push_back(( peca_t ) { FITA[ i ].a, FITA[ i ].b, PECA_USADA } );
         RESULTADOS.push_back( resp );
 
-        if ( V ) {
-            fprintf(stderr, "      " );
-            for ( int k = 0; k < K; ++k )
-                fprintf(stderr, "%d.%d  ", resp[ k ].a, resp[ k ].b );
-            fprintf(stderr, "\n" );
-        }
         return;
     }
 
@@ -80,13 +75,6 @@ void DOMINO( const int posicao, const int last_peca ) {
         int peca_usada = peca.usado;
 
         for ( int lado = 0; lado < 2; ++lado ) {
-            if ( V ) {
-                std::string espacos;
-                for ( int i = posicao; i < K; ++i )
-                    espacos.append( "  " );
-                fprintf(stderr, "%s%d: %d.%d\n", espacos.c_str(), vez, peca_a, peca_b );
-            }
-
             if (( peca_usada == PECA_NAO_USADA ) && // se a peca nao foi usada ainda E
                 ( peca_a == last_peca ||            // o lado A bate com a ultima
                   posicao == K )) {                 // OU se é a primeira peca e deve ser usada
@@ -111,8 +99,6 @@ void DOMINO( const int posicao, const int last_peca ) {
  * Imprime os resultados
  */
 void print_resultado() {
-    if ( V ) fprintf(stderr, "|RESULTADOS|: %d\n", ( int ) RESULTADOS.size());
-//    for ( int resp = 0; resp < RESULTADOS.size(); ++resp ) {
     for ( std::vector<peca_t> resultado: RESULTADOS ) {
         for ( int k = 0; k < K; ++k )
             fprintf(stdout, "%d %d ", resultado[ k ].a, resultado[ k ].b );
@@ -123,7 +109,6 @@ void print_resultado() {
 int main() {
     // Ler a quantidade de Pecas e de slots da Fita
     fscanf(stdin, "%d %d", &N, &K );
-    if ( V ) fprintf(stderr, "N: %d\nK: %d\n", N, K );
 
     //  Aloca todas as N pecas
     peca_t pecas[N];
@@ -138,7 +123,6 @@ int main() {
         int a, b;
         fscanf(stdin, "%d %d", &a, &b );
         PECAS[ i ] = { a, b, PECA_NAO_USADA };
-        if ( V ) fprintf(stderr, "  %d: %d.%d\n", i, PECAS[ i ].a, PECAS[ i ].b );
     }
 
     DOMINO( K, 0 );
