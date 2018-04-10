@@ -6,23 +6,11 @@
  * Compile com C++ 11:
  *   g++ rafaelcardoso_tap02.cpp -o rafaelcardoso_tap02.exe -std=c++11
  *
- *
- * Rodando no MacBook Pro:
- * ....................................................................................................
- * Tempo decorrido: 03:46
- *
- * Nota do item (a): 8.00 de 8
- * Nota do item (b): 4.00 de 4
- * Nota do item (c): 0.00 de 4
- *
- * Nota do projeto: 12.00 de 10
  */
 
 #include <iostream>
 #include <vector>
 #include <cstdio>
-
-//#define V false     // VERBOSE
 
 // FLAG para se a peca de Domino já estiver sendo usada ou nao
 #define PECA_NAO_USADA  0
@@ -47,9 +35,6 @@ peca_t *PECAS;
 // Tabuleiro 1D ou Fita para encaixar os dominos
 peca_t *FITA;
 
-// Armazenara os resultados obtidos
-std::vector<std::vector<peca_t> > RESULTADOS;
-
 /**
  * Funcao que faz backtrack para tentar todas as possibilidades de combinacao.
  *
@@ -59,10 +44,9 @@ std::vector<std::vector<peca_t> > RESULTADOS;
 void DOMINO( const int posicao, const int last_peca ) {
     // Se completou a FITA, entao é uma possibilidade!
     if ( posicao <= 0 ) {
-        std::vector<peca_t> resp;
         for ( int i = 0; i < K; i++ )
-            resp.push_back(( peca_t ) { FITA[ i ].a, FITA[ i ].b, PECA_USADA } );
-        RESULTADOS.push_back( resp );
+            fprintf( stdout, "%d %d ", FITA[ i ].a, FITA[ i ].b );
+        fprintf( stdout, "\n" );
 
         return;
     }
@@ -75,9 +59,9 @@ void DOMINO( const int posicao, const int last_peca ) {
         int peca_usada = peca.usado;
 
         for ( int lado = 0; lado < 2; ++lado ) {
-            if (( peca_usada == PECA_NAO_USADA ) && // se a peca nao foi usada ainda E
-                ( peca_a == last_peca ||            // o lado A bate com a ultima
-                  posicao == K )) {                 // OU se é a primeira peca e deve ser usada
+            if ( ( peca_usada == PECA_NAO_USADA ) &&  // se a peca nao foi usada ainda E
+                 ( peca_a == last_peca ||             // o lado A bate com a ultima
+                   posicao == K ) ) {                 // OU se é a primeira peca e deve ser usada
 
                 // usando a peca
                 FITA[ ( K - posicao ) ] = { peca_a, peca_b, PECA_USADA };
@@ -95,20 +79,9 @@ void DOMINO( const int posicao, const int last_peca ) {
     }
 }
 
-/**
- * Imprime os resultados
- */
-void print_resultado() {
-    for ( std::vector<peca_t> resultado: RESULTADOS ) {
-        for ( int k = 0; k < K; ++k )
-            fprintf(stdout, "%d %d ", resultado[ k ].a, resultado[ k ].b );
-        fprintf(stdout, "\n" );
-    }
-}
-
 int main() {
     // Ler a quantidade de Pecas e de slots da Fita
-    fscanf(stdin, "%d %d", &N, &K );
+    fscanf( stdin, "%d %d", &N, &K );
 
     //  Aloca todas as N pecas
     peca_t pecas[N];
@@ -121,10 +94,49 @@ int main() {
     // Ler todas as PECAS de Domino e
     for ( int i = 0; i < N; ++i ) {
         int a, b;
-        fscanf(stdin, "%d %d", &a, &b );
+        fscanf( stdin, "%d %d", &a, &b );
         PECAS[ i ] = { a, b, PECA_NAO_USADA };
     }
 
+    // Backtracking para tentar todas as possibilidades
     DOMINO( K, 0 );
-    print_resultado();
 }
+
+/**
+ * Rodando o Corretor:
+ *   ./grade.bash ./rafaelcardoso_tap02.exe
+ */
+
+/**
+ * Resultado no MacBook Pro:
+ * ....................................................................................................
+ * Tempo decorrido: 03:22
+ *
+ * Nota do item (a): 8.00 de 8
+ * Nota do item (b): 4.00 de 4
+ * Nota do item (c): 0.00 de 4
+ *
+ * Nota do projeto: 12.00 de 10
+ */
+
+/**
+ * Resultado no C9 (ubuntu):
+ * ....................................................................................................
+ * Tempo decorrido: 03:36
+ *
+ * Nota do item (a): 8.00 de 8
+ * Nota do item (b): 3.96 de 4
+ * Nota do item (c): 0.00 de 4
+ *
+ * Nota do projeto: 11.96 de 10
+ */
+
+/**
+ * Resultado no Moodle:
+ * ....................................................................................................
+ * Nota do item (a): 8.00 de 8
+ * Nota do item (b): 3.76 de 4
+ * Nota do item (c): 0.00 de 4
+ *
+ * Nota do projeto: 11.76 de 10
+ */
