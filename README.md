@@ -1,15 +1,24 @@
-# Técnicas Avançadas de Programação
+# Projeto 2: Trilha de Dominós
 
-## Projeto 2: Trilha de Dominós!
+**UFABC - Universidade Federal do ABC**
 
-Build e execute Corretor do Professor:
+Disciplina: **Técnicas Avançadas de Programação – 2018.Q1**
+
+Professor: **Daniel Morgato Martin**
+
+Aluno: **Rafael Cardoso da Silva** 21048012
+
+- [link do Enunciado](enunciado.pdf)
+
+
+## Compile e execute Corretor do Professor:
 
 ```bash
 chmod +x RUN.sh
 ./RUN.sh
 ```
 
-Build manual:
+## Build manual:
 
 ```bash
 cd src/
@@ -19,7 +28,7 @@ cd ../scripts/
 ./grade.bash ./rafaelcardoso_tap02.exe
 ```
 
-Monta a arvore de Recursao
+## Debug para montar a arvore de Recursao
 
 ```bash
 tap02.exe 2> aa.txt < ..\scripts\in\file09
